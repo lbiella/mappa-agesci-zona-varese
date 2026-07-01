@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Mappa educativa Zona AGESCI Varese</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="map"></div>
+
+  <aside id="panel">
+    <h1>Mappa educativa<br>Zona Varese</h1>
+
+    <p class="intro">
+      Esplorazione territoriale su esagoni. I valori sono indicatori orientativi,
+      utili per leggere il territorio e aprire domande educative.
+    </p>
+
+    <p class="doc-link">
+      <a href="docs/guida_mappe_indici_agesci_varese.pdf" target="_blank" rel="noopener noreferrer">Apri la guida a mappe e indici</a>
+    </p>
+
+    <label for="mode">Visualizza indicatore</label>
+    <select id="mode">
+      <option value="classe">Classi interpretative dinamiche</option>
+      <option value="priorita_dinamica">Priorità educativa scout dinamica</option>
+      <option value="fragilita_dinamica">Fragilità educativa dinamica</option>
+      <option value="priorita">Indice priorità educativa scout originale</option>
+      <option value="fragilita">Indice fragilità educativa originale</option>
+      <option value="scout">Indice bacino scout dinamico</option>
+      <option value="stranieri_assoluti">Stranieri 0-14, numero stimato</option>
+      <option value="stranieri">Quota stranieri 0-14, celle significative</option>
+      <option value="titolo">Basso titolo di studio, rank</option>
+      <option value="famiglie">Famiglie numerose, rank</option>
+      <option value="abitazione">Residenti per abitazione, rank</option>
+    </select>
+
+    <section id="weights-panel">
+      <h2>Pesi degli indicatori</h2>
+
+      <div class="weights-block" data-weight-block="fragilita">
+        <h3>Fragilità educativa</h3>
+
+        <label class="slider-row">
+          <span>Minori stranieri 0-14</span>
+          <input type="range" id="wStranieri" min="0" max="100" value="30">
+          <strong><span id="vStranieri">30</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Basso titolo di studio</span>
+          <input type="range" id="wTitolo" min="0" max="100" value="30">
+          <strong><span id="vTitolo">30</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Famiglie numerose</span>
+          <input type="range" id="wFamiglie" min="0" max="100" value="20">
+          <strong><span id="vFamiglie">20</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Residenti per abitazione</span>
+          <input type="range" id="wAbitazione" min="0" max="100" value="20">
+          <strong><span id="vAbitazione">20</span>%</strong>
+        </label>
+      </div>
+
+      <div class="weights-block" data-weight-block="scout">
+        <h3>Bacino scout territoriale</h3>
+
+        <label class="slider-row">
+          <span>Numero ragazzi / bacino potenziale</span>
+          <input type="range" id="wBacinoNum" min="0" max="100" value="10">
+          <strong><span id="vBacinoNum">10</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Quota scout potenziale</span>
+          <input type="range" id="wQuotaScout" min="0" max="100" value="40">
+          <strong><span id="vQuotaScout">40</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Densità scout potenziale</span>
+          <input type="range" id="wDensScout" min="0" max="100" value="50">
+          <strong><span id="vDensScout">50</span>%</strong>
+        </label>
+      </div>
+
+      <div class="weights-block" data-weight-block="priorita">
+        <h3>Priorità educativa scout</h3>
+
+        <label class="slider-row">
+          <span>Bacino scout territoriale</span>
+          <input type="range" id="wScout" min="0" max="100" value="50">
+          <strong><span id="vScout">50</span>%</strong>
+        </label>
+
+        <label class="slider-row">
+          <span>Fragilità educativa</span>
+          <input type="range" id="wFragilitaFinale" min="0" max="100" value="50">
+          <strong><span id="vFragilitaFinale">50</span>%</strong>
+        </label>
+      </div>
+
+      <button id="resetWeights" type="button">Reset pesi originali</button>
+
+      <p class="weights-note">
+        I cursori modificano la lettura esplorativa della mappa. I valori vengono
+        normalizzati automaticamente in modo che la somma dei pesi visibili sia pari a 100%.
+      </p>
+    </section>
+
+    <div id="legend"></div>
+
+
+
+    <div class="basemap-control">
+      <label for="basemap-select">Sfondo mappa</label>
+      <select id="basemap-select">
+        <option value="voyager">Carto Voyager</option>
+        <option value="positron">Carto Positron</option>
+        <option value="osm">OpenStreetMap</option>
+        <option value="hot">OSM HOT</option>
+      </select>
+    </div>
+
+        <div class="map-version" aria-label="Versione mappa">Versione web_map v1.1.3</div>
+  </aside>
+
+  <aside id="profile-panel" class="profile-panel" aria-live="polite">
+    <button id="profile-close" class="profile-close" type="button" aria-label="Chiudi impronta educativa">×</button>
+    <section id="area-profile" class="area-profile">
+      <h2>Impronta educativa dell’area</h2>
+      <p class="profile-empty">
+        Clicca un esagono sulla mappa per visualizzare il profilo reale dell’area.
+      </p>
+      <div id="profile-content" class="profile-content is-empty"></div>
+    </section>
+  </aside>
+
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

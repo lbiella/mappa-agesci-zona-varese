@@ -1,0 +1,266 @@
+{
+  "type": "FeatureCollection",
+  "name": "gruppi_scout_zone_vicine",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.8530154,
+          45.6131994
+        ]
+      },
+      "properties": {
+        "nome": "Busto Arsizio 1",
+        "indirizzo": "Via Antonio Pozzi 11",
+        "cap": "21052",
+        "citta": "Busto Arsizio",
+        "provincia": "VA",
+        "zona": "Ticino-Olona",
+        "email": "bustoarsizio1@lombardia.agesci.it",
+        "sito_web": "https://www.bustoarsizioprimo.com",
+        "indirizzo_completo": "Via Antonio Pozzi 11, 21052 Busto Arsizio, VA, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Antonio Pozzi 11, 21052 Busto Arsizio, VA, Italia",
+        "latitudine": 45.6131994,
+        "longitudine": 8.8530154
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.8454518,
+          45.6060149
+        ]
+      },
+      "properties": {
+        "nome": "Busto Arsizio 3",
+        "indirizzo": "Via Pepe 3",
+        "cap": "21052",
+        "citta": "Busto Arsizio",
+        "provincia": "VA",
+        "zona": "Ticino-Olona",
+        "email": "bustoarsizio3@lombardia.agesci.it",
+        "sito_web": "https://www.bustotre.org",
+        "indirizzo_completo": "Via Pepe 3, 21052 Busto Arsizio, VA, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Pepe 3, 21052 Busto Arsizio, VA, Italia",
+        "latitudine": 45.6060149,
+        "longitudine": 8.8454518
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.856653,
+          45.595657
+        ]
+      },
+      "properties": {
+        "nome": "Busto Arsizio 5",
+        "indirizzo": "Via Lega Lombarda 20",
+        "cap": "21052",
+        "citta": "Busto Arsizio",
+        "provincia": "VA",
+        "zona": "Ticino-Olona",
+        "email": "bustoarsizio5@lombardia.agesci.it",
+        "sito_web": "https://www.bustoarsizio5.it",
+        "indirizzo_completo": "Via Lega Lombarda 20, 21052 Busto Arsizio, VA, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Lega Lombarda 20, 21052 Busto Arsizio, VA, Italia",
+        "latitudine": 45.595657,
+        "longitudine": 8.856653
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.7771875,
+          45.5526881
+        ]
+      },
+      "properties": {
+        "nome": "Castano Primo 1",
+        "indirizzo": "Via Corio 1",
+        "cap": "20022",
+        "citta": "Castano Primo",
+        "provincia": "MI",
+        "zona": "Ticino-Olona",
+        "email": "castanoprimo1@lombardia.agesci.it",
+        "sito_web": "https://agescicastanoprimo.wordpress.com/",
+        "indirizzo_completo": "Via Corio 1, 20022 Castano Primo, MI, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Corio 1, 20022 Castano Primo, MI, Italia",
+        "latitudine": 45.5526881,
+        "longitudine": 8.7771875
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.040159,
+          45.6278429
+        ]
+      },
+      "properties": {
+        "nome": "Saronno 1",
+        "indirizzo": "Via Biffi 7",
+        "cap": "21047",
+        "citta": "Saronno",
+        "provincia": "VA",
+        "zona": "Ticino-Olona",
+        "email": "saronno1@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via Biffi 7, 21047 Saronno, VA, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Biffi 7, 21047 Saronno, VA, Italia",
+        "latitudine": 45.6278429,
+        "longitudine": 9.040159
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.8731819,
+          45.6251431
+        ]
+      },
+      "properties": {
+        "nome": "Valle Olona 1",
+        "indirizzo": "Via Piave 84",
+        "cap": "21057",
+        "citta": "Olgiate Olona",
+        "provincia": "VA",
+        "zona": "Ticino-Olona",
+        "email": "valleolona1@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via Piave 84, 21057 Olgiate Olona, VA, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Piave 84, 21057 Olgiate Olona, VA, Italia",
+        "latitudine": 45.6251431,
+        "longitudine": 8.8731819
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.0406379,
+          45.80349
+        ]
+      },
+      "properties": {
+        "nome": "Como 1",
+        "indirizzo": "Via Volta 16",
+        "cap": "22100",
+        "citta": "Como",
+        "provincia": "CO",
+        "zona": "SoLCo",
+        "email": "como1@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via Volta 16, 22100 Como, CO, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Volta 16, 22100 Como, CO, Italia",
+        "latitudine": 45.80349,
+        "longitudine": 9.0406379
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.0591171,
+          45.800846
+        ]
+      },
+      "properties": {
+        "nome": "Como 3",
+        "indirizzo": "Via D’Annunzio 46/C",
+        "cap": "22100",
+        "citta": "Como",
+        "provincia": "CO",
+        "zona": "SoLCo",
+        "email": "como3@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via D’Annunzio 46/C, 22100 Como, CO, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via D’Annunzio 46/C, 22100 Como, CO, Italia",
+        "latitudine": 45.800846,
+        "longitudine": 9.0591171
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1350449,
+          45.7445052
+        ]
+      },
+      "properties": {
+        "nome": "Cantù 1",
+        "indirizzo": "Via Dalmazia 2",
+        "cap": "22063",
+        "citta": "Cantù",
+        "provincia": "CO",
+        "zona": "SoLCo",
+        "email": "cantu1@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via Dalmazia 2, 22063 Cantù, CO, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Dalmazia 2, 22063 Cantù, CO, Italia",
+        "latitudine": 45.7445052,
+        "longitudine": 9.1350449
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.1761844,
+          45.6963719
+        ]
+      },
+      "properties": {
+        "nome": "Mariano 1",
+        "indirizzo": "Via Santo Stefano 46",
+        "cap": "22066",
+        "citta": "Mariano Comense",
+        "provincia": "CO",
+        "zona": "SoLCo",
+        "email": "mariano1@lombardia.agesci.it",
+        "sito_web": "",
+        "indirizzo_completo": "Via Santo Stefano 46, 22066 Mariano Comense, CO, Italia",
+        "fonte": "AGESCI Lombardia - Zone Ticino-Olona e SoLCo",
+        "tipo": "gruppo_scout_agesci_zona_vicina",
+        "query_geocoding_usata": "Via Santo Stefano 46, 22066 Mariano Comense, CO, Italia",
+        "latitudine": 45.6963719,
+        "longitudine": 9.1761844
+      }
+    }
+  ]
+}
