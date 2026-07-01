@@ -280,6 +280,13 @@ function rawScout(p, weights) {
   );
 }
 
+function updateEsagoniSource() {
+  const source = map?.getSource?.("esagoni");
+  if (!source || !esagoniData) return;
+
+  source.setData(esagoniData);
+}
+
 function computeDynamicValues() {
   if (!esagoniData) return;
 
@@ -351,10 +358,7 @@ function computeDynamicValues() {
     }
   });
 
-  if (map.getSource("esagoni")) {
-    map.getSource("esagoni").setData(esagoniData);
-  }
-
+  updateEsagoniSource();
   updateDynamicTop5();
   updateSelectedAreaProfile();
 }
@@ -415,7 +419,7 @@ function numericColorExpression(property, cfg = {}) {
 function classColorExpression() {
   return [
     "match",
-    ["get", "classe_confronto_scout_fragilita"],
+    ["get", "classe_dinamica"],
     "priorità educativa scout", classVisibility["priorità educativa scout"] ? classColors["priorità educativa scout"] : "rgba(0,0,0,0)",
     "bacino scout alto", classVisibility["bacino scout alto"] ? classColors["bacino scout alto"] : "rgba(0,0,0,0)",
     "fragilità educativa alta", classVisibility["fragilità educativa alta"] ? classColors["fragilità educativa alta"] : "rgba(0,0,0,0)",
@@ -436,7 +440,7 @@ function isClassMode() {
 function classOpacityExpression() {
   return [
     "match",
-    ["get", "classe_confronto_scout_fragilita"],
+    ["get", "classe_dinamica"],
     "priorità educativa scout", classVisibility["priorità educativa scout"] ? 0.82 : 0,
     "bacino scout alto", classVisibility["bacino scout alto"] ? 0.78 : 0,
     "fragilità educativa alta", classVisibility["fragilità educativa alta"] ? 0.78 : 0,
@@ -1103,6 +1107,7 @@ function attachWeightListeners() {
       input.addEventListener("input", () => {
         balanceWeightGroup(id, ids);
         computeDynamicValues();
+        renderLegendForCurrentMode();
       });
     });
   });
