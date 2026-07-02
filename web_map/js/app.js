@@ -947,10 +947,11 @@ function renderNumericLegend(title) {
 
   legend.innerHTML = `
     <div class="legend-title">${title}</div>
-    <div class="legend-row">
+    <label class="legend-toggle-row">
       <span class="gradient-swatch"></span>
+      <input type="checkbox" class="legend-layer-toggle" data-layer-name="esagoni" ${esagoniVisible ? "checked" : ""}>
       <span>${scaleLabel}</span>
-    </div>
+    </label>
   `;
   appendLayerLegendRows();
 }
@@ -990,7 +991,10 @@ function appendLayerLegendRows() {
       const layerName = ev.target.dataset.layerName;
       const checked = !!ev.target.checked;
 
-      if (layerName === "top5") {
+      if (layerName === "esagoni") {
+        esagoniVisible = checked;
+        setEsagoniVisibility();
+      } else if (layerName === "top5") {
         top5Visible = checked;
         setTop5Visibility();
       } else if (layerName === "gruppi") {
