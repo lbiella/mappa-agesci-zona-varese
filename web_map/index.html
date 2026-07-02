@@ -6,12 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
-  <link href="css/style.css?v=1.1.8" rel="stylesheet">
+  <link href="css/style.css?v=1.1.13" rel="stylesheet">
 </head>
 <body>
   <div id="map"></div>
 
-  <aside id="panel">
+  <aside id="panel" class="app-panel">
+    <button id="panel-collapse" class="panel-collapse" type="button" aria-label="Riduci pannello comandi">‹</button>
     <h1>Mappa educativa<br>Zona Varese</h1>
 
     <p class="intro">
@@ -129,11 +130,22 @@
       </select>
     </div>
 
-        <div class="map-version" aria-label="Versione mappa">Versione web_map v1.1.8</div>
+        <div class="map-version" aria-label="Versione mappa">Versione web_map v1.1.13</div>
   </aside>
 
+  <button id="panel-tab" class="panel-tab" type="button" aria-label="Riapri pannello comandi">☰</button>
+
+  <div id="hex-size-guide" class="hex-size-guide" aria-label="Dimensione esagoni: lato circa 375 metri">
+    <svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+      <polygon points="32,6 54.5,19 54.5,45 32,58 9.5,45 9.5,19"></polygon>
+      <line x1="32" y1="6" x2="54.5" y2="19"></line>
+    </svg>
+    <span>lato ≈ 375 m</span>
+  </div>
+
   <aside id="profile-panel" class="profile-panel" aria-live="polite">
-    <button id="profile-close" class="profile-close" type="button" aria-label="Chiudi impronta educativa">×</button>
+    <button id="profile-minimize" class="profile-minimize" type="button" aria-label="Riduci scheda area">–</button>
+    <button id="profile-close" class="profile-close" type="button" aria-label="Chiudi scheda area">×</button>
     <section id="area-profile" class="area-profile">
       <h2>Impronta educativa dell’area</h2>
       <p class="profile-empty">
@@ -143,8 +155,10 @@
     </section>
   </aside>
 
+  <button id="profile-tab" class="profile-tab" type="button" aria-label="Riapri scheda area">Scheda</button>
+
 
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <script src="js/app.js?v=1.1.8"></script>
+  <script src="js/app.js?v=1.1.13"></script>
 </body>
 </html>

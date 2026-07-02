@@ -722,3 +722,249 @@ select {
 .legend-swatch-class {
   border-radius: 2px;
 }
+
+/* v1.1.12 - esagono misura con tratto fine e riempimento leggero */
+.panel-collapse,
+.profile-minimize {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 28px;
+  height: 28px;
+  margin: -4px -4px 4px 8px;
+  border: 0;
+  border-radius: 999px;
+  background: #f1f1f1;
+  color: #333;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.panel-collapse:hover,
+.profile-minimize:hover {
+  background: #e2e2e2;
+}
+
+#panel.is-collapsed {
+  transform: translateX(calc(-100% - 20px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+#panel,
+.profile-panel {
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.panel-tab,
+.profile-tab {
+  position: absolute;
+  z-index: 12;
+  border: 0;
+  background: rgba(255,255,255,0.96);
+  color: #4b2e83;
+  box-shadow: 0 6px 22px rgba(0,0,0,0.22);
+  cursor: pointer;
+  font-weight: 800;
+  display: none;
+}
+
+.panel-tab {
+  left: 0;
+  top: 78px;
+  width: 34px;
+  height: 54px;
+  border-radius: 0 18px 18px 0;
+  font-size: 20px;
+}
+
+body.panel-collapsed .panel-tab {
+  display: block;
+}
+
+.profile-panel.is-collapsed {
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.profile-tab {
+  right: 0;
+  top: 240px;
+  writing-mode: vertical-rl;
+  transform: none;
+  border-radius: 18px 0 0 18px;
+  padding: 13px 7px;
+  letter-spacing: 0.02em;
+  font-size: 12px;
+}
+
+body.profile-collapsed .profile-tab {
+  display: block;
+}
+
+body.profile-panel-visible .maplibregl-ctrl-top-right {
+  right: 488px;
+}
+
+.profile-geography {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.9fr) 1.1fr;
+  gap: 4px 10px;
+  margin: 10px 0 12px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(75, 46, 131, 0.06);
+  font-size: 12px;
+}
+
+.profile-geography span:nth-child(odd) {
+  color: #555;
+  font-weight: 700;
+}
+
+.profile-geography span:nth-child(even) {
+  color: #222;
+}
+
+.hex-size-guide {
+  position: absolute;
+  left: 376px;
+  bottom: 54px;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #333;
+  font-size: 11px;
+  font-weight: 750;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.96), 0 -1px 2px rgba(255,255,255,0.96);
+}
+
+body.panel-collapsed .hex-size-guide {
+  left: 18px;
+}
+
+.hex-size-guide svg {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: block;
+  aspect-ratio: 1 / 1;
+}
+
+.hex-size-guide polygon {
+  fill: rgba(255, 255, 255, 0.3);
+  stroke: #111111;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.hex-size-guide line {
+  display: none;
+}
+
+.maplibregl-ctrl-bottom-left {
+  left: 374px;
+  bottom: 18px;
+  transition: left 0.22s ease;
+}
+
+body.panel-collapsed .maplibregl-ctrl-bottom-left {
+  left: 10px;
+}
+
+.maplibregl-ctrl-scale {
+  font-family: inherit;
+  font-weight: 700;
+  color: #333;
+}
+
+.popup-compact .popup-title {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.popup-compact .popup-class {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f1f1f1;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 7px;
+}
+
+.popup-place {
+  font-size: 12.5px;
+  color: #444;
+  margin-top: 4px;
+}
+
+.popup-action {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #4b2e83;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.popup-action:hover {
+  text-decoration: underline;
+}
+
+.profile-axis-label tspan,
+.profile-axis-value tspan {
+  dominant-baseline: auto;
+}
+
+@media (max-width: 1120px) {
+  body.profile-panel-visible .maplibregl-ctrl-top-right {
+    right: 10px;
+  }
+
+  .maplibregl-ctrl-bottom-left {
+    left: 10px;
+  }
+
+  .hex-size-guide {
+    left: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .hex-size-guide {
+    display: none;
+  }
+
+  .panel-tab {
+    top: 64px;
+  }
+
+  .profile-tab {
+    top: auto;
+    bottom: 96px;
+    border-radius: 18px 0 0 18px;
+    transform: none;
+  }
+
+  body.profile-panel-visible .maplibregl-ctrl-top-right {
+    right: 10px;
+  }
+
+  .profile-panel.is-collapsed {
+    transform: translateY(calc(100% + 24px));
+  }
+}

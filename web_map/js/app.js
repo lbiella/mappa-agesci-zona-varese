@@ -78,6 +78,7 @@ const map = new maplibregl.Map({
 });
 
 map.addControl(new maplibregl.NavigationControl(), "top-right");
+map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: "metric" }), "bottom-left");
 
 let esagoniData = null;
 let gruppiData = null;
@@ -474,6 +475,87 @@ function showPopup(lngLat, html, options = {}) {
     .addTo(map);
 }
 
+function syncPanelStateClasses() {
+  const panel = document.getElementById("panel");
+  const profilePanel = document.getElementById("profile-panel");
+  document.body.classList.toggle("panel-collapsed", !!panel?.classList.contains("is-collapsed"));
+  document.body.classList.toggle("profile-collapsed", !!profilePanel?.classList.contains("is-collapsed"));
+  document.body.classList.toggle(
+    "profile-panel-visible",
+    !!profilePanel?.classList.contains("is-open") && !profilePanel.classList.contains("is-collapsed")
+  );
+}
+
+function setPanelCollapsed(collapsed) {
+  const panel = document.getElementById("panel");
+  if (!panel) return;
+  panel.classList.toggle("is-collapsed", collapsed);
+  syncPanelStateClasses();
+}
+
+function setProfileCollapsed(collapsed) {
+  const profilePanel = document.getElementById("profile-panel");
+  if (!profilePanel || !profilePanel.classList.contains("is-open")) return;
+  profilePanel.classList.toggle("is-collapsed", collapsed);
+  syncPanelStateClasses();
+}
+
+function openProfilePanel() {
+  const profilePanel = document.getElementById("profile-panel");
+  if (!profilePanel) return;
+  profilePanel.classList.add("is-open");
+  profilePanel.classList.remove("is-collapsed");
+  syncPanelStateClasses();
+}
+
+function firstTextValue(properties, keys) {
+  for (const key of keys) {
+    const value = properties?.[key];
+    if (value === null || value === undefined) continue;
+    const text = String(value).trim();
+    if (text) return text;
+  }
+  return "";
+}
+
+function comunePrevalente(properties) {
+  return firstTextValue(properties, [
+    "comune_prevalente",
+    "Comune_prevalente",
+    "COMUNE_PREVALENTE",
+    "comune",
+    "Comune",
+    "COMUNE"
+  ]);
+}
+
+function comuniInteressati(properties) {
+  const raw = firstTextValue(properties, [
+    "comuni_interessati",
+    "comuni_esagoni",
+    "comuni_esagono",
+    "comuni",
+    "Comuni",
+    "COMUNI"
+  ]);
+  if (!raw) return "";
+  return raw
+    .split(/[;,|]/)
+    .map(item => item.trim())
+    .filter(Boolean)
+    .filter((item, index, array) => array.indexOf(item) === index)
+    .join(", ");
+}
+
+function areaDescrittiva(properties) {
+  return firstTextValue(properties, [
+    "area_descrittiva",
+    "area_descr",
+    "Area_descrittiva",
+    "AREA_DESCRITTIVA"
+  ]);
+}
+
 
 function fieldValue(properties, key) {
   const value = properties?.[key];
@@ -539,7 +621,7 @@ const profileAxes = [
   {
     key: "quota_fam_numerose",
     label: "Famiglie numerose su famiglie totali",
-    shortLabel: "Famiglie numerose",
+    shortLabel: "Famiglie\nnumerose",
     group: "frag",
     scale: "percent",
     value: p => fieldValue(p, "quota_fam_numerose"),
@@ -615,6 +697,26 @@ function polarPoint(cx, cy, radius, angle) {
   };
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function svgMultilineText(text, x, y, anchor, className, lineHeight = 13) {
+  const lines = String(text ?? "").split("\n");
+  const offset = -((lines.length - 1) * lineHeight) / 2;
+  const tspans = lines.map((line, index) => {
+    const dy = index === 0 ? offset : lineHeight;
+    return `<tspan x="${x}" dy="${dy}">${escapeHtml(line)}</tspan>`;
+  }).join("");
+
+  return `<text class="${className}" x="${x}" y="${y}" text-anchor="${anchor}">${tspans}</text>`;
+}
+
 function profileSvg(properties) {
   const width = 440;
   const height = 340;
@@ -654,11 +756,12 @@ function profileSvg(properties) {
 
   const labels = points.map(item => {
     const anchor = item.labelPoint.x < cx - 12 ? "end" : item.labelPoint.x > cx + 12 ? "start" : "middle";
-    const valueY = item.labelPoint.y + 15;
-    const labelY = item.labelPoint.y - 2;
+    const labelX = item.labelPoint.x.toFixed(1);
+    const labelY = (item.labelPoint.y - 6).toFixed(1);
+    const valueY = (item.labelPoint.y + 20).toFixed(1);
     return `
-      <text class="profile-axis-label" x="${item.labelPoint.x.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="${anchor}">${item.axis.shortLabel}</text>
-      <text class="profile-axis-value" x="${item.labelPoint.x.toFixed(1)}" y="${valueY.toFixed(1)}" text-anchor="${anchor}">${item.axis.display(properties)}</text>
+      ${svgMultilineText(item.axis.shortLabel, labelX, labelY, anchor, "profile-axis-label", 12)}
+      ${svgMultilineText(item.axis.display(properties), labelX, valueY, anchor, "profile-axis-value", 11)}
     `;
   }).join("");
 
@@ -704,7 +807,7 @@ function profileInterpretation(properties) {
   return "L’area non emerge tra le priorità del modello, ma può comunque essere letta nel contesto locale.";
 }
 
-function renderAreaProfile(properties) {
+function renderAreaProfile(properties, options = {}) {
   const container = document.getElementById("profile-content");
   const empty = document.querySelector("#area-profile .profile-empty");
   const panel = document.getElementById("profile-panel");
@@ -714,22 +817,38 @@ function renderAreaProfile(properties) {
     container.classList.add("is-empty");
     container.innerHTML = "";
     if (empty) empty.style.display = "block";
-    if (panel) panel.classList.remove("is-open");
+    if (panel) panel.classList.remove("is-open", "is-collapsed");
+    syncPanelStateClasses();
     return;
   }
 
-  if (panel) panel.classList.add("is-open");
+  if (options.open) {
+    openProfilePanel();
+  } else if (panel) {
+    panel.classList.add("is-open");
+    syncPanelStateClasses();
+  }
   if (empty) empty.style.display = "none";
   container.classList.remove("is-empty");
 
-  const title = properties.area_descrittiva || properties.comune_prevalente || properties.hex_id || "Area selezionata";
+  const comune = comunePrevalente(properties);
+  const comuni = comuniInteressati(properties);
+  const area = areaDescrittiva(properties);
+  const title = area || comune || properties.hex_id || "Area selezionata";
+  const geographyRows = [
+    comune ? `<span>Comune prevalente</span><span>${escapeHtml(comune)}</span>` : "",
+    comuni ? `<span>Comuni interessati</span><span>${escapeHtml(comuni)}</span>` : "",
+    area ? `<span>Area descrittiva</span><span>${escapeHtml(area)}</span>` : ""
+  ].filter(Boolean).join("");
   const distance = properties.distanza_gruppo_scout_km !== undefined && properties.distanza_gruppo_scout_km !== null
     ? `${fmt(properties.distanza_gruppo_scout_km, 2)} km in linea d’aria`
     : "n.d.";
 
   container.innerHTML = `
-    <div class="profile-card-title">${title}</div>
-    <div class="profile-class">${properties.classe_dinamica || properties.classe_confronto_scout_fragilita || "n.d."}</div>
+    <div class="profile-card-title">${escapeHtml(title)}</div>
+    <div class="profile-class">${escapeHtml(properties.classe_dinamica || properties.classe_confronto_scout_fragilita || "n.d.")}</div>
+
+    ${geographyRows ? `<div class="profile-geography">${geographyRows}</div>` : ""}
 
     <div class="profile-kpi-grid">
       <div class="profile-kpi"><strong>${fmt(properties.indice_priorita_dinamica ?? properties.indice_priorita_educativa_scout, 0)}</strong><span>priorità</span></div>
@@ -773,53 +892,29 @@ function updateSelectedAreaProfile() {
   renderAreaProfile(selectedProfileProperties());
 }
 
-function selectAreaProfile(properties) {
+function selectAreaProfile(properties, options = {}) {
   selectedHexId = properties?.hex_id || null;
-  updateSelectedAreaProfile();
+  if (options.open) {
+    renderAreaProfile(selectedProfileProperties(), { open: true });
+  } else {
+    updateSelectedAreaProfile();
+  }
 }
 
 
 function popupHtml(p) {
+  const title = p.hex_id || "Esagono";
+  const className = p.classe_dinamica || p.classe_confronto_scout_fragilita || "n.d.";
+  const comune = comunePrevalente(p);
+  const area = areaDescrittiva(p);
+  const place = [comune, area].filter(Boolean).join(" / ");
+
   return `
-    <div class="popup-title">${p.area_descrittiva || p.comune_prevalente || "Esagono"}</div>
-    <div><strong>Classe dinamica:</strong> ${p.classe_dinamica || "n.d."}</div>
-    <div><strong>Classe originaria:</strong> ${p.classe_confronto_scout_fragilita || "n.d."}</div>
-
-    <div class="popup-section">Indici dinamici</div>
-    <div class="popup-grid">
-      <span>Priorità dinamica</span><span>${fmt(p.indice_priorita_dinamica)}</span>
-      <span>Fragilità dinamica</span><span>${fmt(p.indice_fragilita_dinamica)}</span>
-      <span>Bacino scout dinamico</span><span>${fmt(p.indice_scout_dinamico)}</span>
-    </div>
-
-    <div class="popup-section">Indici originali</div>
-    <div class="popup-grid">
-      <span>Priorità educativa scout</span><span>${fmt(p.indice_priorita_educativa_scout)}</span>
-      <span>Fragilità educativa</span><span>${fmt(p.indice_fragilita_educativa)}</span>
-      <span>Bacino scout territoriale</span><span>${fmt(p.indice_scout_territoriale)}</span>
-    </div>
-
-    <div class="popup-section">Componenti bacino scout</div>
-    <div class="popup-grid">
-      <span>Bacino assoluto, rank</span><span>${fmt(p.rank_bacino_scout)}</span>
-      <span>Quota scout, rank</span><span>${fmt(p.rank_quota_scout)}</span>
-      <span>Densità scout, rank</span><span>${fmt(p.rank_dens_scout)}</span>
-    </div>
-
-    <div class="popup-section">Indicatori fragilità</div>
-    <div class="popup-grid">
-      <span>Quota stranieri 0-14, rank</span><span>${fmt(p.rank_quota_stranieri_0_14)}</span>
-      <span>Basso titolo di studio, rank</span><span>${fmt(p.rank_quota_basso_titolo)}</span>
-      <span>Famiglie numerose, rank</span><span>${fmt(p.rank_quota_fam_numerose)}</span>
-      <span>Residenti per abitazione, rank</span><span>${fmt(p.rank_residenti_per_abit)}</span>
-    </div>
-
-    <div class="popup-section">Dati territoriali</div>
-    <div class="popup-grid">
-      <span>Popolazione stimata</span><span>${fmt(p.pop_2023, 0)}</span>
-      <span>Bacino scout proxy</span><span>${fmt(p.bacino_scout_proxy, 0)}</span>
-      <span>Gruppo più vicino</span><span>${p.gruppo_scout_piu_vicino || "n.d."}</span>
-      <span>Distanza gruppo</span><span>${fmt(p.distanza_gruppo_scout_km)} km in linea d’aria</span>
+    <div class="popup-compact">
+      <div class="popup-title">${escapeHtml(title)}</div>
+      <div class="popup-class">${escapeHtml(className)}</div>
+      ${place ? `<div class="popup-place">${escapeHtml(place)}</div>` : ""}
+      <button type="button" class="popup-action" data-open-profile="true">Apri scheda</button>
     </div>
   `;
 }
@@ -1139,6 +1234,26 @@ function attachControlListeners() {
     });
   }
 
+  const panelCollapse = document.getElementById("panel-collapse");
+  if (panelCollapse) {
+    panelCollapse.addEventListener("click", () => setPanelCollapsed(true));
+  }
+
+  const panelTab = document.getElementById("panel-tab");
+  if (panelTab) {
+    panelTab.addEventListener("click", () => setPanelCollapsed(false));
+  }
+
+  const profileMinimize = document.getElementById("profile-minimize");
+  if (profileMinimize) {
+    profileMinimize.addEventListener("click", () => setProfileCollapsed(true));
+  }
+
+  const profileTab = document.getElementById("profile-tab");
+  if (profileTab) {
+    profileTab.addEventListener("click", () => setProfileCollapsed(false));
+  }
+
   const profileClose = document.getElementById("profile-close");
   if (profileClose) {
     profileClose.addEventListener("click", () => {
@@ -1146,7 +1261,20 @@ function attachControlListeners() {
       renderAreaProfile(null);
     });
   }
+
+  document.addEventListener("click", event => {
+    const target = event.target?.closest?.("[data-open-profile]");
+    if (!target) return;
+    event.preventDefault();
+    if (selectedHexId) {
+      renderAreaProfile(selectedProfileProperties(), { open: true });
+    } else {
+      openProfilePanel();
+    }
+    if (activePopup) activePopup.remove();
+  });
 }
+
 
 function addMapLayers() {
   map.addSource("esagoni", {
@@ -1240,7 +1368,7 @@ function addMapLayers() {
     const feature = event.features?.[0];
     if (!feature) return;
 
-    selectAreaProfile(feature.properties);
+    selectAreaProfile(feature.properties, { open: true });
     showPopup(event.lngLat, popupHtml(feature.properties));
   });
 
